@@ -23,6 +23,8 @@ class CreateAdminsTable extends Migration
             $table->string('password');
             $table->string('token_hash');
             $table->dateTime('token_expired');
+            $table->rememberToken();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

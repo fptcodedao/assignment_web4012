@@ -10,7 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/homes', function(){
+    return session()->get('a');
+})->name('home');
+
+
+Route::get('/users', function(){
+//    $users = factory(User::class, 1)->make();
+    return redirect()->route('home')->with(['a' => 'sdf']);
 });
