@@ -12,4 +12,11 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+    .js([
+        'resources/js/admin/app.js',
+    ], 'public/assets/admin/js/app.js')
+   .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/admin/app.scss', 'public/assets/admin/css')
+    .copyDirectory('node_modules/dropify/dist', 'public/assets/admin/plugin/dropify')
+    .copyDirectory('node_modules/select2/dist', 'public/assets/admin/plugin/select2')
+;
