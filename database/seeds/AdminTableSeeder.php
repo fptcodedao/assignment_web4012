@@ -22,8 +22,21 @@ class AdminTableSeeder extends Seeder
             'token_expired' => now(),
         ]);
 
-        $role = \App\Models\Role::where('slug', 'full_admin')->first();
+        $editor = Admin::create([
+            'full_name' => 'Editor',
+            'avatar' => '',
+            'story' => '',
+            'email' => 'editor@fptcodedao.com',
+            'username' => 'editor',
+            'password' => bcrypt('admin123'),
+            'token_hash' => bcrypt(time()),
+            'token_expired' => now(),
+        ]);
 
-        $admin->roles()->attach($role);
+        $role_admin = \App\Models\Role::where('slug', 'full_admin')->first();
+        $role_editor = \App\Models\Role::where('slug', 'editor')->first();
+
+        $admin->roles()->attach($role_admin);
+        $editor->roles()->attach($role_editor);
     }
 }

@@ -16,5 +16,11 @@ class RolesTableSeeder extends Seeder
             'slug' => 'full_admin',
             'permissions' => ['isAdmin']
         ]);
+
+        \App\Models\Role::create([
+           'name' => 'Editor',
+            'slug' => 'editor',
+            'permissions' => ['posts.*']
+        ]);
     }
 }

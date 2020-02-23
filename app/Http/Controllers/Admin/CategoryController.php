@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -14,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        $file = Storage::disk('public')->url('2020/02/1582414023-Thời_sự_VTV_2017-2018.png');
+        return view('admin.category.index', compact('file'));
     }
 
     /**
@@ -33,9 +36,15 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $image = $request->file('thumb_img');
+        $path_time = date('Y/m');
+        $name_file = time().'-'.$image->getClientOriginalName();
+        $file = $image->storeAs($path_time, $name_file  ,'public');
+
+        $data_category = $request->all(['name', 'description', 'parent_id']);
+        dd($data_category, $file);
     }
 
     /**
