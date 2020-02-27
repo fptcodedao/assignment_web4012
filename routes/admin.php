@@ -19,6 +19,16 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
             return "a";
         })->name('index');
 
-        Route::resource('category', 'CategoryController');
+
+        Route::group(['prefix' => 'category', 'as' =>'category.'], function(){
+            Route::post('data', 'CategoryController@data')->name('data');
+            Route::post('search', 'CategoryController@search')->name('search');
+
+            Route::resource('', 'CategoryController')->parameters([
+                '' => 'category?'
+            ]);
+        });
+
+        Route::resource('posts', 'PostController');
     });
 });

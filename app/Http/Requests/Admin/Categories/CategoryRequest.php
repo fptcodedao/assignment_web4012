@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Categories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,10 +23,21 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $method = $this->method();
+        switch ($method){
+            case 'PUT':
+            case 'PATCH':
+                $rule_parent_id = 'numeric';
+                $rule_thumb_img = 'image|mimes:jpeg,png,jpg,gif,svg|max:10240';
+                break;
+            default:
+                $rule_parent_id = 'required|numeric';
+                $rule_thumb_img = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240';
+        }
         return [
-            'name' => 'required|min:6|max:255',
-            'parent_id' => 'required|numeric',
-            'thumb_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240'
+            'name' => 'required|min:6|max:255||unique:categories,name,id,:id',
+            'parent_id' => $rule_parent_id,
+            'thumb_img' => $rule_thumb_img
         ];
     }
 
@@ -40,7 +51,8 @@ class CategoryRequest extends FormRequest
             'required' => ':attribute không được để trống',
             'min' => ':attribute phải lớn hơn :min ký tự',
             'max' => ':attribute phải nhỏ hơn :max ký tự',
-            'image' => ':attribute phải đúng định dạng ảnh'
+            'image' => ':attribute phải đúng định dạng ảnh',
+            'unique' => ':attribute đã tồn tại trên hệ thống'
         ];
     }
 
