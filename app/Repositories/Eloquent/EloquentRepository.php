@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 
 
 use App\Repositories\Contracts\RepositoryInterface;
-
+use Illuminate\Support\Arr;
 abstract class EloquentRepository implements RepositoryInterface
 {
     protected $_model;
@@ -21,6 +21,16 @@ abstract class EloquentRepository implements RepositoryInterface
         $this->_model = app()->make(
             $this->getModel()
         );
+    }
+
+    public function getTableColumns($except = []) {
+        $columns = $this->_model
+            ->getConnection()
+            ->getSchemaBuilder()
+            ->getColumnListing($this->_model->getTable());
+        $columns = array_flip($columns);
+        $columns = Arr::except($columns, $except);
+        return array_flip($columns);
     }
 
     public function getAll($columns = array('*'))

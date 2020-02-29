@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Categories\CategoryRequest;
 use App\Http\Requests\Admin\Categories\UpdateCategoryRequest;
 use App\Models\Categories;
 use App\Repositories\Contracts\Categories\CategoriesRepositoryInterface;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 
@@ -138,14 +139,13 @@ class CategoryController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param int $id
-     * @param CategoryRequest $request
-     * @return bool
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function update(int $id,CategoryRequest $request)
+    public function update(Request $request, int $id)
     {
-        $data = $request->all(['name', 'description', 'parent_id']);
-        dd($id, $data);
+        $data = $request->all(['name', 'description', 'thumb_img']);
         $category = $this->categoriesRepository->findOrFail($id);
         $thumb_img = $request->file('thumb_img');
         if($request->file('thumb_img')){
@@ -154,21 +154,8 @@ class CategoryController extends Controller
         foreach($data as $k => $value){
             $category->$k = $value;
         }
-        return !$category->save() || $category;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @param  \App\Models\Categories  $categories
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id, Categories $categories)
-    {
-        $delete = $this->categoriesRepository->delete($id);
         return response([
-            'deleted' => $delete
+            'updated' => $category->save()
         ]);
     }
 
@@ -184,5 +171,20 @@ class CategoryController extends Controller
         $name_file = time().'-'.$file->getClientOriginalName();
         $file_save = $file->storeAs($path_time, $name_file  ,'public');
         return $file_save;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Categories  $categories
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Categories $categories, $id)
+    {
+        $delete = $this->categoriesRepository->delete($id);
+        return response([
+            'deleted' => $delete
+        ]);
     }
 }

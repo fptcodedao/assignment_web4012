@@ -3,7 +3,6 @@
 
 @push('style')
     <link rel="stylesheet" href="{{asset('assets/admin/plugin/dropify/css/dropify.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/admin/plugin/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/plugin/datatables/css/jquery.dataTables.min.css')}}">
 @endpush
 @section('content')
@@ -95,26 +94,9 @@
                         method: 'get'
                     }).done(result => resolve(result)).fail(error => reject(error));
                 });
-            },
-            updateId: (id, data) =>{
-                return new Promise((resolve, reject) => {
-                    $.ajax({
-                        url: `{{ route('dashboard.category.update') }}/${id}`,
-                        method: 'put',
-                        cache : false,
-                        contentType : false,
-                        processData : false,
-                        data: data
-                    }).done(result => resolve(result)).fail(error => reject(error))
-                });
             }
         };
         $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
             $('.dropify').dropify();
 
             $('.select2_category').select2({
@@ -283,18 +265,23 @@
                 }
             });
 
-            $('#update_category').on('submit', async function(e){
+            $('#update_category').on('submit', function(e){
                 e.preventDefault();
-
-                try{
-                    let formData = new FormData($(this)[0]),
-                        id = formData.get('id'),
-                        updateCategory = await CategoriesModel.updateId(id, formData);
-                    console.log(updateCategory)
-                }
-                catch(e){
-                    console.log(e.message)
-                }
+                let formData = new FormData($(this)[0]),
+                    id = formData.get('id');
+                formData.set('_method', 'put');
+                $.ajax({
+                    url: `{{ route('dashboard.category.update') }}/${id}`,
+                    method: 'post',
+                    contentType : false,
+                    processData : false,
+                    data: formData
+                }).done(function(result){
+                    if(result.updated){
+                        $('#editCate').modal('hide');
+                        swal('Thông báo!!!', 'Cập nhật thành công', 'success').then(_ => table.ajax.reload());
+                    }
+                }).fail(error => console.log(error));
             })
         });
     </script>

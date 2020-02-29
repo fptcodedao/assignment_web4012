@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCategoriesTable extends Migration
 {
+    const STATUS_DONE = 1;
     /**
      * Run the migrations.
      *
@@ -20,7 +21,7 @@ class CreateCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->string('thumb_img')->nullable();
             $table->integer('parent_id')->unsigned();
-            $table->integer('status')->default(1);
+            $table->integer('status')->default(self::STATUS_DONE);
             $table->timestamps();
         });
     }

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePagesTable extends Migration
 {
+    const DEFAULT_VIEW = 0;
+    const IS_PUBLISHED = false;
     /**
      * Run the migrations.
      *
@@ -23,8 +25,8 @@ class CreatePagesTable extends Migration
             $table->string('seo_keyword')->nullable();
             $table->string('seo_description')->nullable();
             $table->integer('admin_id')->unsigned();
-            $table->boolean('published')->default(false);
-            $table->bigInteger('view')->default(0);
+            $table->boolean('published')->default(self::IS_PUBLISHED);
+            $table->bigInteger('view')->default(self::DEFAULT_VIEW);
             $table->integer('status')->unsigned();
             $table->timestamps();
         });

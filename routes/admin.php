@@ -26,9 +26,15 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
 
             Route::resource('', 'CategoryController')->parameters([
                 '' => 'category?'
-            ]);
+            ])->except(['create', 'edit']);
         });
 
-        Route::resource('posts', 'PostController');
+        Route::group(['prefix' => 'posts', 'as' => 'posts.'], function(){
+
+            Route::post('data', 'PostController@data')->name('data');
+            Route::resource('', 'PostController')->parameters([
+                '' => 'posts?'
+            ]);
+        });
     });
 });

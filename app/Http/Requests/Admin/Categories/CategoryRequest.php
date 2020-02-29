@@ -35,7 +35,7 @@ class CategoryRequest extends FormRequest
                 $rule_thumb_img = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240';
         }
         return [
-            'name' => 'required|min:6|max:255||unique:categories,name,id,:id',
+            'name' => 'required|min:6|max:255||unique:categories,name,'.$this->input('id'),
             'parent_id' => $rule_parent_id,
             'thumb_img' => $rule_thumb_img
         ];

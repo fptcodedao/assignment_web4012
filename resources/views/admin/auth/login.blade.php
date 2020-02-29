@@ -15,12 +15,22 @@
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
                 </div>
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                @enderror
             </div>
             <div class="input-group mb-3 @error('password') border border-warning @enderror">
                 <input type="password" name="password" class="form-control" placeholder="Password">
                 <div class="input-group-append">
                     <span class="input-group-text"><a href="#" class="forgot" title="Forgot Password"><i class="zmdi zmdi-lock"></i></a></span>
                 </div>
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                @enderror
             </div>
             <div class="checkbox">
                 <input id="remember_me" type="checkbox">

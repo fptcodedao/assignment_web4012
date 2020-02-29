@@ -13,7 +13,7 @@
     @stack('style')
 </head>
 
-<body class="theme-blush">
+<body class="theme-blush ls-toggle-menu">
 
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -79,6 +79,15 @@
 <script src="{{asset('assets/bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 
 <script src="{{asset('assets/bundles/mainscripts.bundle.js')}}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+    });
+</script>
 @stack('script')
 </body>
 </html>
