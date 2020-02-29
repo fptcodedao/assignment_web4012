@@ -19,4 +19,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/admin/app.scss', 'public/assets/admin/css')
     .copyDirectory('node_modules/dropify/dist', 'public/assets/admin/plugin/dropify')
     .copyDirectory('node_modules/select2/dist', 'public/assets/admin/plugin/select2')
+    .copyDirectory('node_modules/sweetalert/dist', 'public/assets/admin/plugin/sweetalert')
+    .copyDirectory('node_modules/datatables/media', 'public/assets/admin/plugin/datatables')
+    .copyDirectory('node_modules/ckeditor4', 'public/assets/admin/plugin/ckeditor4')
 ;

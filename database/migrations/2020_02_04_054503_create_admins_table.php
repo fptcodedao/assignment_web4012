@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAdminsTable extends Migration
 {
+    const ACTIVE = true;
     /**
      * Run the migrations.
      *
@@ -24,7 +25,7 @@ class CreateAdminsTable extends Migration
             $table->string('token_hash');
             $table->dateTime('token_expired');
             $table->rememberToken();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(self::ACTIVE);
             $table->timestamps();
         });
     }

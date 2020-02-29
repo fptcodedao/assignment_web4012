@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>@yield('title', config('app.name'))</title>
-    @csrf
+    <meta name="_token" content="{{csrf_token()}}">
     <!-- Favicon-->
     <link rel="icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
     <link rel="stylesheet" href="{{asset('assets/admin/css/app.css')}}">
     <!-- Custom Css -->
-    @yield('style')
+    @stack('style')
 </head>
 
-<body class="theme-blush">
+<body class="theme-blush ls-toggle-menu">
 
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -54,7 +54,7 @@
                 <div class="col-lg-7 col-md-6 col-sm-12">
                     <h2>@yield('title')</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('dashboard.index')}}"><i class="zmdi zmdi-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('dashboard.index')}}"><i class="zmdi zmdi-home"></i> {{config('app.name')}}</a></li>
                         @if (trim($__env->yieldContent('parentPageTitle')))
                             <li class="breadcrumb-item">@yield('parentPageTitle')</li>
                         @endif
@@ -79,6 +79,15 @@
 <script src="{{asset('assets/bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 
 <script src="{{asset('assets/bundles/mainscripts.bundle.js')}}"></script>
-@yield('script')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+    });
+</script>
+@stack('script')
 </body>
 </html>
