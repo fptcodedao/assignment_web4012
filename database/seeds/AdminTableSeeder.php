@@ -14,7 +14,7 @@ class AdminTableSeeder extends Seeder
         $admin = Admin::create([
             'full_name' => 'KhariDz',
             'avatar' => '',
-            'story' => '',
+            'story' => 'Xin Chào, tôi là Khải là 1 website developer tương lai. Ước mơ trở thành full stack developer giỏi. Tận dụng các kỹ năng và kinh nghiệm cntt để giúp ích cho tương lai.',
             'email' => 'admin@fptcodedao.com',
             'username' => 'admin',
             'password' => bcrypt('admin123'),

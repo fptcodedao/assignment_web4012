@@ -14,13 +14,13 @@ class RolesTableSeeder extends Seeder
         \App\Models\Role::create([
             'name' => 'Full Admin',
             'slug' => 'full_admin',
-            'permissions' => ['isAdmin']
+            'permissions' => ['isAdmin' => true, 'posts.*' => true]
         ]);
 
         \App\Models\Role::create([
            'name' => 'Editor',
             'slug' => 'editor',
-            'permissions' => ['posts.*']
+            'permissions' => ['posts.*' => true]
         ]);
     }
 }

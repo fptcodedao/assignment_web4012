@@ -15,7 +15,10 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $models = [
             'Categories',
-            'Post'
+            'Post',
+            'Users',
+            'Admin',
+            'Comment'
         ];
         foreach($models as $model){
             $this->app->bind(

@@ -219,7 +219,9 @@
                                                 table.ajax.reload();
                                             });
                                     }).fail(function (errors) {
-                                        console.log(errors)
+                                        if(errors.status == 403){
+                                            swal('Thông báo!!!', 'Bạn không có quyền thực thi', 'warning');
+                                        }
                                     });
                                 } else {
                                     swal("Bạn đã hủy yêu cầu xóa item này");
@@ -248,6 +250,8 @@
                     if(error.status == 422){
                         let res = error.responseJSON;
                         console.log(res)
+                    }else if(error.status == 403){
+                        swal('Thông báo!!!', 'Bạn không có quyền thêm danh mục', 'warning');
                     }
                 });
             });
@@ -256,12 +260,13 @@
                 try{
                     let id = $(e.relatedTarget).data('edit');
                     let categoryData = await CategoriesModel.findId(id);
+
                     $('#update_id').val(categoryData.id);
                     $('#update_name').val(categoryData.name);
                     $('#update_description').val(categoryData.description);
                 }catch(e){
                     $('#editCate').modal('hide');
-                    console.log(e.message);
+                    swal('Thông báo!!!', 'Bạn không có quyền thực thi', 'warning');
                 }
             });
 
@@ -281,7 +286,11 @@
                         $('#editCate').modal('hide');
                         swal('Thông báo!!!', 'Cập nhật thành công', 'success').then(_ => table.ajax.reload());
                     }
-                }).fail(error => console.log(error));
+                }).fail(error => {
+                    if(error.status == 403){
+                        swal('Thông báo!!!', 'Bạn không có quyền thực thi', 'warning');
+                    }
+                });
             })
         });
     </script>

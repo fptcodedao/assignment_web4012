@@ -13,10 +13,15 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
         });
     });
 
+    Route::get('logout', function(){
+        \Auth::guard('admin')->logout();
+        return redirect()->route('dashboard.login.index');
+    })->name('logout');
+
 
     Route::group(['middleware' => 'admin_auth'], function (){
         Route::get('/', function(){
-            return "a";
+            return view('admin.index');
         })->name('index');
 
 
@@ -31,9 +36,29 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
 
         Route::group(['prefix' => 'posts', 'as' => 'posts.'], function(){
 
-            Route::post('data', 'PostController@data')->name('data');
-            Route::resource('', 'PostController')->parameters([
+            Route::post('data', 'PostsController@data')->name('data');
+            Route::resource('', 'PostsController')->parameters([
                 '' => 'posts?'
+            ])->except(['show']);
+        });
+
+
+        Route::group(['prefix' => 'users', 'as' => 'users.'], function(){
+            Route::post('data', 'UsersController@data')->name('data');
+            Route::resource('', 'UsersController')->parameters([
+                '' => 'users?'
+            ])->except([
+                'show', 'edit', 'update', 'create'
+            ]);
+        });
+
+        Route::group(['prefix' => 'comments', 'as' => 'comments.'], function(){
+            Route::post('data', 'CommentController@data')->name('data');
+
+            Route::resource('', 'CommentController')->parameters([
+                '' => 'comments?'
+            ])->only([
+                'index', 'destroy'
             ]);
         });
     });
