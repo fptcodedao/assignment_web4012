@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Post;
+use App\Models\Role;
+use App\Policies\Admin\AdminPolicy;
 use App\Policies\Admin\CategoryPolicy;
+use App\Policies\Admin\PermissionPolicy;
 use App\Policies\Admin\PostPolicy;
 use App\Policies\Admin\CommentPolicy;
 use App\Policies\Admin\UserPolicy;
@@ -22,7 +25,9 @@ class AuthServiceProvider extends ServiceProvider
         Post::class => PostPolicy::class,
         \App\Models\Categories::class => CategoryPolicy::class,
         \App\Models\User::class => UserPolicy::class,
-        \App\Models\Comment::class => CommentPolicy::class
+        \App\Models\Comment::class => CommentPolicy::class,
+        Role::class => PermissionPolicy::class,
+        Admin::class => AdminPolicy::class
     ];
 
     /**

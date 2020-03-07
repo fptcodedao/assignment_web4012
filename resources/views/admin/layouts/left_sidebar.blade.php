@@ -38,6 +38,12 @@
             <li class="{{ request()->routeIs('dashboard.users*') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.users.index') }}" class=""><i class="zmdi zmdi-account"></i><span>Quản lý người dùng</span></a>
             </li>
+            <li class="{{ request()->routeIs('dashboard.admin*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.admin.index') }}" class=""><i class="zmdi zmdi-account"></i><span>Quản trị viên</span></a>
+            </li>
+            <li class="{{ request()->routeIs('dashboard.roles*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.roles.index') }}" class=""><i class="zmdi zmdi-account"></i><span>Phân Quyền</span></a>
+            </li>
             <li>
                 <a href="{{ route('dashboard.logout') }}" class=""><i class="zmdi zmdi-close"></i><span>Đăng xuất</span></a>
             </li>

@@ -65,7 +65,7 @@
                     <div class="comment-body">
                         <footer class="comment-meta">
                             <div class="comment-author vcard">
-                                <img alt="img" src="{{ asset($comment->users->avatar ? $comment->users->avatar : 'https://image.ibb.co/jw55Ex/def_face.jpg') }}" class="avatar avatar-72 photo"/>
+                                <img alt="img" src="{{ asset($comment->users->avatar ? 'storage/'.$comment->users->avatar : 'https://image.ibb.co/jw55Ex/def_face.jpg') }}" class="avatar avatar-72 photo"/>
                                 <b class="fn">{{ $comment->users->name }}</b>
                             </div>
                             <div class="comment-metadata">

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    use Sluggable;
     protected $table = 'roles';
 
     protected $fillable = [
-        'id', 'name', 'slug', 'permission'
+        'id', 'name', 'slug', 'permissions'
     ];
     protected $casts = [
         'permissions' => 'array',
@@ -31,6 +33,18 @@ class Role extends Model
             }
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 
     /**

@@ -30,7 +30,7 @@
     <!--[if lt IE 9]>
         <script src="{{ asset('assets/js/html5/respond.min.js') }}"></script>
     <![endif]-->
-
+    @stack('style')
 </head>
 
 <body data-offset="200" data-spy="scroll" data-target=".ownavigation">
@@ -153,6 +153,6 @@
 
 <!-- Library - Theme JS -->
 <script src="{{ asset('assets/js/functions.js') }}"></script>
-
+@stack('script')
 </body>
 </html>

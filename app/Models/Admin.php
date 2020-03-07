@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
 
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $guard = 'admins';
 
@@ -67,4 +68,8 @@ class Admin extends Authenticatable
     public function fullPermission(){
         return $this->hasAccess(['isAdmin']) || false;
     }
+
+    protected $dates = [
+        'deleted_at'
+    ];
 }

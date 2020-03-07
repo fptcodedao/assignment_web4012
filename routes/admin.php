@@ -61,5 +61,22 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
                 'index', 'destroy'
             ]);
         });
+
+        Route::group(['prefix' => 'roles', 'as' => 'roles.'], function (){
+            Route::resource('', 'RoleController')->parameters([
+                '' => 'roles?'
+            ])->except([
+                'show', 'create', 'delete',
+
+            ]);
+        });
+
+        Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (){
+            Route::resource('', 'AdminController')->parameters([
+                '' => 'admin?'
+            ])->except([
+                'show', 'update', 'create', 'edit'
+            ]);
+        });
     });
 });
