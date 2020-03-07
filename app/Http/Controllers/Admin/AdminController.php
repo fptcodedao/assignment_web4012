@@ -42,7 +42,7 @@ class AdminController extends Controller
         $user = \Auth::guard('admin')->user();
         $this->authorizeForUser( $user,'update', Admin::class);
 
-        $role_editor = $this->roleRepository->where('slug', 'full_admin')->where('id', $request->input('role'))->first();
+        $role_editor = $this->roleRepository->where('slug', '!=', 'full_admin')->whereIn('id', $request->input('role'))->get();
 
         $data = $request->all(['full_name', 'email']);
         $password = bin2hex(random_bytes(5));

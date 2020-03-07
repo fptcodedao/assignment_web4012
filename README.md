@@ -19,6 +19,8 @@ config
 
 copy file .env.example to .env
 
+config database in .env
+
 run: `php artisan key:generate`
 
 **Step4:**
@@ -30,3 +32,17 @@ update database with migration & fake data
 short link
 
 `php artisan storage:link`
+
+**Step6:**
+config smtp mail in .env
+>example
+```
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=admin@fptcodedao.com
+MAIL_PASSWORD=password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_NAME="Khari Nguyen"
+MAIL_FROM_ADDRESS=admin@fptcodedao.com
+```

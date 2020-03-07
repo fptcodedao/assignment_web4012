@@ -131,6 +131,11 @@ abstract class EloquentRepository implements RepositoryInterface
         return $this;
     }
 
+    public function whereIn($column, $values, $boolean = 'and', $not = false){
+        $this->_model = $this->_model->whereIn($column, $values, $boolean , $not);
+        return $this;
+    }
+
 
     public function whereNull($columns, $boolean = 'and', $not = false){
         $this->_model = $this->_model->whereNull($columns, $boolean = 'and', $not = false);

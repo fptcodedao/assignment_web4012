@@ -25,8 +25,9 @@ class AdminRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string',
-            'email' => 'required|email|unique:admins,email,',$this->input('id'),
-            'role' => 'required|numeric'
+            'email' => 'required|email|unique:admins,email,'.$this->input('id'),
+            'role' => 'required|array',
+            'role.*' => 'numeric'
         ];
     }
 }

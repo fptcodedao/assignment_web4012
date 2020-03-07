@@ -35,7 +35,7 @@
                             @error('role')
                             <p>{{ $message }}</p>
                             @enderror
-                            <select name="role" id="role" class="form-control">
+                            <select name="role[]" id="role" class="form-control" multiple>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
@@ -62,6 +62,7 @@
                                 <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Avatar</th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -72,6 +73,7 @@
                                     <td>{{ $admin->full_name }}</td>
                                     <td>{{ $admin->email }}</td>
                                     <td>{{ $admin->avatar }}</td>
+                                    <td>{{ $admin->allRole() }}</td>
                                     <td>
                                         <button data-delete="{{ $admin->id }}" class="btn btn-danger btn-sm btn-delete"><i class="zmdi zmdi-delete"></i></button>
                                     </td>
@@ -88,9 +90,11 @@
 @endsection
 
 @push('script')
+    <script src="{{asset('assets/admin/plugin/select2/js/select2.min.js')}}"></script>
     <script src="{{asset('assets/admin/plugin/sweetalert/sweetalert.min.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#role').select2();
             $('table').on('click', '.btn-delete', function(e){
                 e.preventDefault();
                 let id = $(this).data('delete');

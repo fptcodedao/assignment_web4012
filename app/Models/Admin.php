@@ -52,6 +52,15 @@ class Admin extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_admin');
     }
 
+    public function allRole(){
+        $roles = $this->roles()->get();
+        $text = '';
+        foreach($roles as $role){
+            $text .= $role->name.',';
+        }
+        return trim($text, ',');
+    }
+
     public function hasAccess(array $permissions): bool{
         foreach($this->roles as $role){
             if($role->hasAccess($permissions)) {
