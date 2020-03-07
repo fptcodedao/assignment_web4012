@@ -25,3 +25,8 @@ run: `php artisan key:generate`
 update database with migration & fake data
 
 `php artisan migrate --seed`
+
+**Step5:**
+short link
+
+`php artisan storage:link`
