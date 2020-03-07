@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
 
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $guard = 'admins';
 
@@ -50,4 +51,25 @@ class Admin extends Authenticatable
     public function roles(){
         return $this->belongsToMany(Role::class, 'role_admin');
     }
+
+    public function hasAccess(array $permissions): bool{
+        foreach($this->roles as $role){
+            if($role->hasAccess($permissions)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function inRole(string $slug){
+        return $this->roles()->where('slug', $slug)->count() == 1;
+    }
+
+    public function fullPermission(){
+        return $this->hasAccess(['isAdmin']) || false;
+    }
+
+    protected $dates = [
+        'deleted_at'
+    ];
 }

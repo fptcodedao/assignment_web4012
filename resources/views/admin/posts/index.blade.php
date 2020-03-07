@@ -13,6 +13,9 @@
             <div class="card">
                 <div class="body">
                     <h2 class="card-inside-title">@yield('title') </h2>
+                    @if (session('error'))
+                        <div class="alert alert-danger text-center">{{ session('error') }}</div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="post_data">
                         </table>
@@ -34,6 +37,10 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
+
+            @error('permission')
+                swal('Thông báo!!!', '{{ $message }}', 'warning');
+            @enderror
 
             var table = $('#post_data').DataTable({
                 dom: 'Bfrtip',
@@ -92,7 +99,7 @@
                             let url_edit = '{{ route('dashboard.posts.edit', ':id') }}';
                                 url_edit = url_edit.replace(':id', id);
                             return `
-                            <a data-edit="{{ route('dashboard.posts.show') }}/${id}" class="btn btn-success btn-eye btn-sm"><i class="zmdi zmdi-eye"></i></a>
+                            <a data-edit="${id}" class="btn btn-success btn-eye btn-sm"><i class="zmdi zmdi-eye"></i></a>
                             <a href="${url_edit}" class="btn btn-primary btn-edit btn-sm"><i class="zmdi zmdi-edit"></i></a>
 										<a data-delete="${id}" class="btn btn-danger btn-sm btn-delete"><i class="zmdi zmdi-delete"></i></a>`;
                         }
@@ -132,6 +139,10 @@
                                         });
                                     }
                                 }).fail(error => {
+                                    let status = error.status;
+                                    if(status === 403){
+                                        swal('Thông báo!!!', 'Bạn không có quyền xóa item này', 'warning');
+                                    }
                                     console.log(error)
                                 });
                             } else {

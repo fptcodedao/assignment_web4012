@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Categories\CategoryRequest;
 use App\Http\Requests\Admin\Categories\UpdateCategoryRequest;
+use App\Models\Admin;
 use App\Models\Categories;
 use App\Repositories\Contracts\Categories\CategoriesRepositoryInterface;
 use http\Client\Response;
@@ -25,20 +26,24 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'viewAny', Categories::class);
         return view('admin.category.index');
     }
 
     /**
-     * get all data
      * @param Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function data(Request $request){
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'viewAny', Categories::class);
         $columns = ['id', 'name', 'parent_id', 'description', 'thumb_img'];
 
         $limit = $request->input('length');
@@ -90,13 +95,15 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CategoryRequest $request
+     * @param CategoryRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(CategoryRequest $request)
     {
+        dd($request->except(['_token']));
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'create', Categories::class);
         //save file
         $image = $request->file('thumb_img');
         $file_save = $this->save_file($image);
@@ -117,13 +124,16 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     * @param int|array $id
-     * @return string
+     * @param $id
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show($id)
     {
-        return $this->categoriesRepository->findOrFail($id);
+        $post = $this->categoriesRepository->findOrFail($id);
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'update', $post);
+        return $post || [];
     }
 
     /**
@@ -142,11 +152,16 @@ class CategoryController extends Controller
      * @param Request $request
      * @param int $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, int $id)
     {
         $data = $request->all(['name', 'description', 'thumb_img']);
         $category = $this->categoriesRepository->findOrFail($id);
+
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'update', $category);
+
         $thumb_img = $request->file('thumb_img');
         if($request->file('thumb_img')){
             $data['thumb_img'] = $this->save_file($thumb_img);
@@ -174,17 +189,18 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Categories  $categories
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Categories $categories
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Categories $categories, $id)
     {
-        $delete = $this->categoriesRepository->delete($id);
+        $delete = $this->categoriesRepository->find($id);
+        $user = \Auth::guard('admin')->user();
+        $this->authorizeForUser( $user,'delete', $delete);
         return response([
-            'deleted' => $delete
+            'deleted' => $delete->delete()
         ]);
     }
 }

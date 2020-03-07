@@ -15,4 +15,9 @@ class PostEloquentRepository extends EloquentRepository implements PostRepositor
     {
         return Post::class;
     }
+
+    public function getHighTop()
+    {
+        return $this->_model->orderBy('view', 'desc')->get()->take(5);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Carbon\Carbon;
 class Post extends Model
 {
     use Sluggable, SoftDeletes;
@@ -39,6 +39,19 @@ class Post extends Model
      */
     public function tags(){
         return $this->belongsToMany(Tag::class, 'tag_post');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    public function getCreatedAtAttribute($date)
+    {
+        $locale = \App::getLocale();
+        Carbon::setLocale($locale);
+        $dt = Carbon::createFromFormat('Y-m-d H:i:s', $date);
+        $now = Carbon::now();
+        return $dt->diffForHumans($now);
     }
 
     /**

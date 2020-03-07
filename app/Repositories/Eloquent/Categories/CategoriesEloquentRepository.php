@@ -22,5 +22,9 @@ class CategoriesEloquentRepository extends EloquentRepository implements Categor
         return $this;
     }
 
+    public function getTop()
+    {
+        return $this->_model->all()->take(5);
+    }
 
 }

@@ -10,20 +10,40 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes(['verify' => true]);
 
-Auth::routes();
+Route::group(['as' => 'client.'], function(){
+    Route::get('/', 'HomeController@index')->name('index');
 
-Route::get('/homes', function(){
-    return session()->get('a');
-})->name('home');
+    Route::group(['prefix' => 'p', 'as' => 'posts.'], function (){
 
+        Route::group(['middleware' => ['verified']], function (){
+            Route::post('comment/{slug}', 'PostController@storeComment')
+                ->name('comment');
+        });
+        Route::resource('', 'PostController')->parameters([
+            '' => 'posts?'
+        ])->except([
+            'store', 'create', 'destroy'
+        ]);
+    });
 
-Route::get('/users', function(){
-//    $users = factory(User::class, 1)->make();
-    return redirect()->route('home')->with(['a' => 'sdf']);
+    Route::group(['prefix' => 'account', 'as' => 'account.', 'middleware' => ['verified']], function(){
+        Route::post('password/{id}', 'AccountController@storePassword')->name('password');
+        Route::resource('', 'AccountController')->parameters([
+            '' => 'account?'
+        ])->except([
+            'show', 'edit', 'destroy', 'store', 'create'
+        ]);
+    });
+
+    Route::group(['prefix' => 'category', 'as' => 'category.'], function (){
+        Route::resource('', 'CategoryController')->parameters([
+            '' => 'category?'
+        ])->except([
+            'store', 'create', 'destroy', 'index'
+        ]);
+    });
 });

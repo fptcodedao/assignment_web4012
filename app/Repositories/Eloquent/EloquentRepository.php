@@ -4,6 +4,7 @@
 namespace App\Repositories\Eloquent;
 
 
+use App\Models\Post;
 use App\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Support\Arr;
 abstract class EloquentRepository implements RepositoryInterface
@@ -41,6 +42,16 @@ abstract class EloquentRepository implements RepositoryInterface
     public function get($columns = ['*'])
     {
         return $this->_model->get($columns);
+    }
+
+    public function query(){
+        $this->_model = $this->_model->query();
+        return $this->_model;
+    }
+
+    public function first($columns = ['*'])
+    {
+        return $this->_model->first($columns);
     }
 
     public function count()
@@ -109,6 +120,7 @@ abstract class EloquentRepository implements RepositoryInterface
         $this->_model = $this->_model->with($relations);
         return $this;
     }
+
 
     public function findOrFail($id, $columns = ['*']){
         return $this->_model->findOrFail($id, $columns);
@@ -181,7 +193,7 @@ abstract class EloquentRepository implements RepositoryInterface
      */
     public function search($column, $value = null)
     {
-        $query = $this->_model->query();
+        $query = $this->_model;
         if (is_array($column)){
             foreach($column as $key){
                 $query = $this->orWhere($key, 'like', '%'.$value.'%');
@@ -190,5 +202,9 @@ abstract class EloquentRepository implements RepositoryInterface
             $query = $this->where($column, 'like', '%'.$value.'%');
         }
         return $query;
+    }
+
+    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null){
+        return $this->_model->paginate($perPage, $columns, $pageName, $page);
     }
 }

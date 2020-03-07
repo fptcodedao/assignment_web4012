@@ -31,4 +31,8 @@ interface RepositoryInterface
     public function offset($value);
 
     public function limit($value);
+
+    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null);
+
+    public function first($columns = ['*']);
 }
