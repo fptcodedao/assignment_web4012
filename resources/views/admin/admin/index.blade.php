@@ -61,7 +61,6 @@
                                 <th>#</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
-                                <th>Avatar</th>
                                 <th>Role</th>
                                 <th>Action</th>
                             </tr>
@@ -72,9 +71,9 @@
                                     <th scope="row">{{ $admin->id }}</th>
                                     <td>{{ $admin->full_name }}</td>
                                     <td>{{ $admin->email }}</td>
-                                    <td>{{ $admin->avatar }}</td>
                                     <td>{{ $admin->allRole() }}</td>
                                     <td>
+                                        <a href="{{ route('dashboard.admin.edit', $admin->id) }}" class="btn btn-primary btn-edit btn-sm"><i class="zmdi zmdi-edit"></i></a>
                                         <button data-delete="{{ $admin->id }}" class="btn btn-danger btn-sm btn-delete"><i class="zmdi zmdi-delete"></i></button>
                                     </td>
                                 </tr>

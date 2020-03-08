@@ -1,7 +1,6 @@
 
-# About Project Đang update :3
-_ Assginment _
-
+# About Project
+_ Assginment web4012 _
 
 ## First Run:
 **Step1:**
@@ -21,6 +20,7 @@ copy file .env.example to .env
 
 config database in .env
 
+> Generate key
 run: `php artisan key:generate`
 
 **Step4:**
@@ -29,7 +29,7 @@ update database with migration & fake data
 `php artisan migrate --seed`
 
 **Step5:**
-short link
+short link storage
 
 `php artisan storage:link`
 
@@ -46,3 +46,15 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_NAME="Khari Nguyen"
 MAIL_FROM_ADDRESS=admin@fptcodedao.com
 ```
+
+**Step7:**
+
+`php artisan serve`
+
+Now view in the browser local: http://localhost:8000/
+
+### Account Demo
+| Name      | Email                 | Password | Role       |
+|-----------|-----------------------|----------|------------|
+| KhariDz   | admin@fptcodedao.com  | admin123 | Full Admin |
+| Editor    | editor@fptcodedao.com | admin123 |Editor      |

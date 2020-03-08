@@ -75,7 +75,7 @@ Route::namespace('Admin')->prefix('dashboard')->name('dashboard.')->group(functi
             Route::resource('', 'AdminController')->parameters([
                 '' => 'admin?'
             ])->except([
-                'show', 'update', 'create', 'edit'
+                'show', 'create'
             ]);
         });
     });

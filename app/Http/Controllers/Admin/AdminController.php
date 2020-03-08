@@ -70,26 +70,26 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
      */
     public function edit($id)
     {
-        //
+        $admin = $this->adminRepository->with('roles')->findOrFail($id);
+        $roles = $this->roleRepository->where('id', '!=', 1)->get();
+
+        return view('admin.admin.update', compact('admin', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(AdminRequest $request, $id)
     {
-        //
+        $admin = $this->adminRepository->with('roles')->findOrFail($id);
+        $roles = $this->roleRepository->where('slug', '!=', 'full_admin')->whereIn('id', $request->input('role'))->get();
+        //remove all foreign key
+        $admin->roles()->detach();
+        $admin->roles()->attach($roles);
+        return redirect()->back()->with('success', 'Cập nhật thành công');
+
     }
 
     /**

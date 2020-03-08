@@ -23,11 +23,23 @@ class AdminRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'full_name' => 'required|string',
-            'email' => 'required|email|unique:admins,email,'.$this->input('id'),
-            'role' => 'required|array',
-            'role.*' => 'numeric'
-        ];
+        $method = $this->method();
+        switch ($method){
+            case 'PUT':
+            case 'PATCH':
+                $rule = [
+                    'role' => 'required|array',
+                    'role.*' => 'numeric'
+                ];
+                break;
+            default:
+                $rule = [
+                    'full_name' => 'required|string',
+                    'email' => 'required|email|unique:admins,email,'.$this->input('id'),
+                    'role' => 'required|array',
+                    'role.*' => 'numeric'
+                ];
+        }
+        return $rule;
     }
 }
