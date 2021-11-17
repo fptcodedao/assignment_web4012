@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "bootstrap": "^4.3.1",
-        "ckeditor4": "^4.13.1",
+        "ckeditor4": "^4.17.0",
         "datatables": "^1.10.18",
         "dropify": "^0.2.2",
         "select2": "^4.0.13",
